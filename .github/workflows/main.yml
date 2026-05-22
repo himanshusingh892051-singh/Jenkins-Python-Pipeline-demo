@@ -1,4 +1,5 @@
 name: Build python application using github actions
+
 on:
   push:
     branches:
@@ -8,6 +9,7 @@ on:
 jobs:
   build-python:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -23,11 +25,12 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Flake8 for code quality and static analysis
-        continue-on-error: true          # ✅ step-level, not inside run
+        continue-on-error: true # ✅ step-level, not inside run
         run: |
           flake8 .
 
       - name: Run pytest for testing
         run: |
           pip install pytest pytest-cov
-          pytest tests --cov=app --cov-report=xml
+          # 🚀 FIXED: 'pytest' ki jagah 'python -m pytest' use kiya hai taaki path error na aaye
+          python -m pytest tests --cov=app --cov-report=xml
